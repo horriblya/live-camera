@@ -1,0 +1,28 @@
+services:
+  live-camera-server:
+    build: ./live-camera-server
+    environment:
+      CAMERA_USER: root
+      CAMERA_PASS: root
+      CAMERA_HOST: 192.168.177.90
+    ports:
+      - "3001:3001"
+    restart: always
+    networks:
+      - app-network
+
+  live-camera-app:
+    build: ./live-camera-app
+    ports:
+      - "3000:3000"
+    restart: always
+    depends_on:
+      - live-camera-server
+    networks:
+      - app-network
+
+networks:
+  app-network:
+    driver: bridge
+    name: artemis-320_artemis-320-deployment_app-network
+    external: true

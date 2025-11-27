@@ -1,0 +1,12 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "command": "npm start",
+            "name": "Run live-camera-app",
+            "request": "launch",
+            "type": "node-terminal",
+            "cwd": "${workspaceFolder}/live-camera-app"
+        }
+    ]
+}
