@@ -39,7 +39,7 @@ app.get("/camera", (req, res) => {
   });
 
   upstream.on("error", (err) => {
-    console.error("Error connecting to camera:", err && err.message);
+    console.error("Error connecting to camera " + url, err && err.message);
     if (!handled) {
       handled = true;
       if (!res.headersSent) {

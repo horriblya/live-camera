@@ -4,7 +4,7 @@ services:
     environment:
       CAMERA_USER: root
       CAMERA_PASS: root
-      CAMERA_HOST: 192.168.177.90
+      CAMERA_HOST: host.docker.internal:8080
     ports:
       - "3001:3001"
     restart: always
@@ -20,6 +20,18 @@ services:
       - live-camera-server
     networks:
       - app-network
+
+  virtual-camera:
+    build: ./virtual-camera
+    ports:
+      - "8080:8080"
+    environment:
+      BASIC_USER: "root"
+      BASIC_PASS: "root"
+      SOURCE_TYPE: "file"
+      SOURCE_FILE: "/media/sample.mp4"
+    volumes:
+      - ./virtual-camera/media:/media:ro
 
 networks:
   app-network:
