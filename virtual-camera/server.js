@@ -121,7 +121,7 @@ app.get("/axis-cgi/mjpg/video.cgi", checkBasicAuth, (req, res) => {
           frameBuffer = null;
           console.log("Stopped ffmpeg due to no clients");
         }
-      }, 2000);
+      }, 5000);
     }
   });
 });
