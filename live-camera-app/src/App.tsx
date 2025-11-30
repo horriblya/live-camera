@@ -107,7 +107,7 @@ function App() {
           <p>
             Ip camera stream. The proxy should be at <code>http://localhost:3001/camera</code>
           </p>
-          <div style={{ marginTop: 8 }}>{content}</div>
+          <div style={{ marginTop: 8, display: 'flex', justifyContent: 'center' }}>{content}</div>
         </div>
       </header>
     </div>

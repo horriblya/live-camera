@@ -1,0 +1,16 @@
+node_modules
+npm-debug.log
+.git
+.gitignore
+.env
+.env.local
+.DS_Store
+Coverage
+.vscode
+.idea
+Dist
+Build
+.cache
+.next
+.vercel
+.turbo
