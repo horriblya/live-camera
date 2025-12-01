@@ -2,6 +2,7 @@
 
 # dependencies
 node_modules/
+virtual-camera/media/
 .pnp/
 .pnp.js
 
