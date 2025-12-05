@@ -109,6 +109,8 @@ app.get("/camera", (req, res) =>
                 {
                     handled = true;
                     res.status(401).json({ error: "Unauthorized to access camera" });
+
+                    console.log('/camera: unauthorized to access camera');
                     cameraUpstream.destroy();
                 }
                 return;
@@ -204,6 +206,9 @@ app.get('/camera/status', (req, res) =>
         {
             handled = true;
             res.status(200).json({ status: 'error', reason: 'unauthorized' });
+            
+            console.log('/camera: unauthorized to access camera');
+
             upstream.destroy();
             return;
         }
@@ -248,4 +253,4 @@ app.get('/camera/status', (req, res) =>
     upstream.end();
 });
 
-app.listen(3001, () => console.log("Camera proxy running on port 3001"));
+app.listen(33001, () => console.log("Camera proxy running on port 33001"));

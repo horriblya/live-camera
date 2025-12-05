@@ -15,7 +15,7 @@ function App() {
   useEffect(() => {
     let mounted = true;
     const check = () => {
-      fetch('http://localhost:3001/camera/status', { cache: 'no-store' })
+      fetch('http://localhost:33001/camera/status', { cache: 'no-store' })
         .then((res) => res.json())
         .then((json) => {
           if (!mounted) return;
@@ -81,7 +81,7 @@ function App() {
   if (status === 'ok') {
     content = (
       <img
-        src="http://localhost:3001/camera"
+        src="http://localhost:33001/camera"
         alt="IP Camera"
         style={{ width: 640, height: 480, objectFit: 'cover', background: '#000' }}
         onError={() => setStatus('camera_unavailable')}
@@ -105,7 +105,7 @@ function App() {
         <div style={{ fontFamily: 'Arial, sans-serif', padding: 16 }}>
           <h1>IP Camera Stream</h1>
           <p>
-            Ip camera stream. The proxy should be at <code>http://localhost:3001/camera</code>
+            Ip camera stream. The proxy should be at <code>http://localhost:33001/camera</code>
           </p>
           <div style={{ marginTop: 8, display: 'flex', justifyContent: 'center' }}>{content}</div>
         </div>

@@ -4,12 +4,10 @@ services:
     environment:
       CAMERA_USER: root
       CAMERA_PASS: root
-      CAMERA_HOST: host.docker.internal:8080
+      CAMERA_HOST: 192.168.177.90
     ports:
-      - "3001:3001"
+      - "33001:33001"
     restart: always
-    networks:
-      - app-network
 
   live-camera-app:
     build: ./live-camera-app
@@ -18,8 +16,6 @@ services:
     restart: always
     depends_on:
       - live-camera-server
-    networks:
-      - app-network
 
   virtual-camera:
     build: ./virtual-camera
@@ -32,9 +28,3 @@ services:
       SOURCE_FILE: "/media/sample.mp4"
     volumes:
       - ./virtual-camera/media:/media:ro
-
-networks:
-  app-network:
-    driver: bridge
-    name: artemis-320_artemis-320-deployment_app-network
-    external: true
