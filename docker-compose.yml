@@ -4,15 +4,17 @@ services:
     environment:
       CAMERA_USER: root
       CAMERA_PASS: root
-      CAMERA_HOST: 192.168.177.90
+      CAMERA_HOST: http://192.168.177.90/axis-cgi/mjpg/video.cgi
     ports:
       - "33001:33001"
+      - "39229:39229"
+    command: node --inspect=0.0.0.0:39229 server.js
     restart: always
 
   live-camera-app:
     build: ./live-camera-app
     ports:
-      - "3000:3000"
+      - "30001:30001"
     restart: always
     depends_on:
       - live-camera-server

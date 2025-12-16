@@ -11,7 +11,9 @@ RUN npm install
 # Copy source code
 COPY . .
 
+ENV PORT=30001
+
 # Expose the application port
-EXPOSE 3000
+EXPOSE 30001
 
 CMD ["npm", "start"]

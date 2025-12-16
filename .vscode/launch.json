@@ -7,6 +7,16 @@
             "request": "launch",
             "type": "node-terminal",
             "cwd": "${workspaceFolder}/live-camera-app"
+        },
+        {
+            "name": "Attach to server in Docker",
+            "type": "node",
+            "request": "attach",
+            "port": 39229,
+            "address": "localhost",
+            "localRoot": "${workspaceFolder}/live-camera-server",
+            "remoteRoot": "/usr/app",
+            "skipFiles": ["<node_internals>/**"]
         }
     ]
 }
