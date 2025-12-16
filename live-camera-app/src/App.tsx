@@ -60,17 +60,20 @@ function App()
 
     const renderPlaceholder = (message: string, icon: string) => (
         <div
-            style={{
-                width: 640,
-                height: 480,
-                background: '#000',
-                color: '#fff',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                flexDirection: 'column',
-                fontFamily: 'Arial, sans-serif',
-            }}>
+            style=
+            {
+                {
+                    width: 640,
+                    height: 480,
+                    background: '#000',
+                    color: '#fff',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    flexDirection: 'column',
+                    fontFamily: 'Arial, sans-serif',
+                }
+            }>
                 
             <div style={{ fontSize: 48, marginBottom: 8 }}>{icon}</div>
             <div style={{ fontSize: 18 }}>{message}</div>
@@ -84,8 +87,16 @@ function App()
             <img
                 src="http://localhost:33001/camera"
                 alt="IP Camera"
-                style={{ width: 640, height: 480, objectFit: 'contain', background: '#000' }}
-                onError={() => setStatus('camera_proxy_error')}/>
+                style=
+                {
+                    { 
+                        width: 640, 
+                        height: 480, 
+                        objectFit: 'contain', 
+                        background: '#000' 
+                    }
+                }
+                onError={() => setStatus('camera_proxy_unexpected_error')}/>
         );
     } 
     else if (status === 'loading')
