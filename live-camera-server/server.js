@@ -19,8 +19,6 @@ app.get("/camera", async (req, res) =>
 {
     try 
     {
-        console.log('/camera:: incoming request from', req.ip);
-
         // Запрос к камере через digest-fetch
         const response = await client.fetch(CAMERA_HOST);
 
@@ -31,7 +29,7 @@ app.get("/camera", async (req, res) =>
     catch (err) 
     {
         console.error('/camera:: proxy error:', err);
-        res.status(500).send('camera_proxy_error');
+        res.status(502);
     }
 });
 
@@ -43,24 +41,26 @@ app.get('/camera/status', async (req, res) =>
         if (!CAMERA_HOST)
         {
             console.log('/camera/status:: CAMERA_HOST is not configured');
-            res.json('camera_host_not_configure');
+            res.json({ status: 'camera_host_not_configured' });
             return;
         }
 
         if (!CAMERA_USER || !CAMERA_PASS)
         {
             console.log('/camera/status:: CAMERA_USER or CAMERA_PASS is not configured');
-            res.json('camera_credentials_not_configured');
+            res.json({ status: 'camera_credentials_not_configured' });
             return;
         }
 
+        // Клиент с Digest‑аутентификацией 
+        const client = new digestFetch(CAMERA_USER, CAMERA_PASS);
         const response = await client.fetch(CAMERA_HOST, { method: 'HEAD' });
 
         if (response.ok)
         {
             res.json({ status: 'ok' });
         }
-        if (response.status === 401 || response.status === 403) 
+        else if (response.status === 401 || response.status === 403) 
         {
             res.json({ status: 'unauthorized' });
         }

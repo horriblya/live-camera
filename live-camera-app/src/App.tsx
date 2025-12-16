@@ -1,13 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import './App.css';
 
-type CameraState =
-    | 'loading'
-    | 'ok'
-    | 'camera_error'
-    | 'camera_proxy_error'
-    | 'unauthorized'
-    | 'no_config';
+type CameraState = 'loading' | 'ok' | 'camera_error' | 'camera_proxy_error' | 'camera_proxy_unexpected_error' | 'unauthorized' | 'no_config';
 
 function App()
 {
@@ -32,12 +26,12 @@ function App()
                     case 'camera_proxy_error':
                         setStatus('camera_proxy_error');
                         break;
-                    case 'no_camera_host_configured':
+                    case 'camera_host_not_configured':
                     case 'camera_credentials_not_configured':
                         setStatus('no_config');
                         break;
                     default:
-                        setStatus('camera_proxy_error');
+                        setStatus('ok');
                 }
             }
             catch
@@ -77,7 +71,7 @@ function App()
             <img
                 src="http://localhost:33001/camera"
                 alt="IP Camera"
-                style={{ width: 640, height: 480, objectFit: 'cover', background: '#000' }}
+                style={{ width: 640, height: 480, objectFit: 'contain', background: '#000' }}
                 onError={() => setStatus('camera_proxy_error')}/>
         );
     } 
@@ -88,6 +82,10 @@ function App()
     else if (status === 'camera_proxy_error')
     {
         content = renderPlaceholder('Camera proxy is not available', '⛓️‍💥');
+    } 
+    else if (status === 'camera_proxy_unexpected_error')
+    {
+        content = renderPlaceholder('Something went wrong', '🚀');
     } 
     else if (status === 'unauthorized')
     {
