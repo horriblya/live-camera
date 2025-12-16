@@ -6,7 +6,11 @@
             "name": "Run live-camera-app",
             "request": "launch",
             "type": "node-terminal",
-            "cwd": "${workspaceFolder}/live-camera-app"
+            "cwd": "${workspaceFolder}/live-camera-app",
+            "env": 
+            {
+                "PORT": "30001"
+            }
         },
         {
             "name": "Attach to server in Docker",

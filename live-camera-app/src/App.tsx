@@ -14,24 +14,37 @@ function App()
             try
             {
                 const res = await fetch('http://localhost:33001/camera/status', { cache: 'no-store' });
-                const json = await res.json();
-                switch (json.status)
+
+                if(res.ok)
                 {
-                    case 'unauthorized':
-                        setStatus('unauthorized');
-                        break;
-                    case 'camera_error':
-                        setStatus('camera_error');
-                        break;
-                    case 'camera_proxy_error':
-                        setStatus('camera_proxy_error');
-                        break;
-                    case 'camera_host_not_configured':
-                    case 'camera_credentials_not_configured':
-                        setStatus('no_config');
-                        break;
-                    default:
-                        setStatus('ok');
+                    const json = await res.json();
+
+                    switch (json)
+                    {
+                        case 'ok':
+                            setStatus('ok');
+                            break;
+                        case 'unauthorized':
+                            setStatus('unauthorized');
+                            break;
+                        case 'camera_error':
+                            setStatus('camera_error');
+                            break;
+                        case 'camera_proxy_error':
+                            setStatus('camera_proxy_error');
+                            break;
+                        case 'camera_host_not_configured':
+                        case 'camera_credentials_not_configured':
+                            setStatus('no_config');
+                            break;
+                        default:
+                            setStatus('camera_proxy_unexpected_error');
+                            break;
+                    }
+                }
+                else
+                {
+                    setStatus('camera_proxy_unexpected_error');
                 }
             }
             catch

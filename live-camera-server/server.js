@@ -4,8 +4,6 @@ import digestFetch from 'digest-fetch';
 const app = express();
 const { CAMERA_USER, CAMERA_PASS, CAMERA_HOST } = process.env;
 
-// Клиент с Digest‑аутентификацией 
-const client = new digestFetch(CAMERA_USER, CAMERA_PASS);
 
 // Allow React dev server (or any origin) to fetch status
 app.use((req, res, next) =>
@@ -19,10 +17,13 @@ app.get("/camera", async (req, res) =>
 {
     try 
     {
-        // Запрос к камере через digest-fetch
+        // Client with Digest authentication
+        const client = new digestFetch(CAMERA_USER, CAMERA_PASS);
+
+        // Request to camera using digest-fetch
         const response = await client.fetch(CAMERA_HOST);
 
-        // Проксируем заголовки и тело
+        // Proxing headers and body
         res.writeHead(response.status, response.headers.raw());
         response.body.pipe(res);
     }
@@ -33,46 +34,56 @@ app.get("/camera", async (req, res) =>
     }
 });
 
-// Проверка статуса камеры
+// Check camera status support
 app.get('/camera/status', async (req, res) =>
 {
+    const fetchTimeout = 2500; // should be less than the client status check timeout
+
     try 
     {
         if (!CAMERA_HOST)
         {
             console.log('/camera/status:: CAMERA_HOST is not configured');
-            res.json({ status: 'camera_host_not_configured' });
+            res.json('camera_host_not_configured');
             return;
         }
 
         if (!CAMERA_USER || !CAMERA_PASS)
         {
             console.log('/camera/status:: CAMERA_USER or CAMERA_PASS is not configured');
-            res.json({ status: 'camera_credentials_not_configured' });
+            res.json('camera_credentials_not_configured');
             return;
         }
 
-        // Клиент с Digest‑аутентификацией 
+        // Client with Digest authentication
         const client = new digestFetch(CAMERA_USER, CAMERA_PASS);
-        const response = await client.fetch(CAMERA_HOST, { method: 'HEAD' });
+        const response = await client.fetch(CAMERA_HOST, { method: 'HEAD', signal: AbortSignal.timeout(fetchTimeout) });
 
         if (response.ok)
         {
-            res.json({ status: 'ok' });
+            res.json('ok');
         }
-        else if (response.status === 401 || response.status === 403) 
+        else if (response.status === 401) 
         {
-            res.json({ status: 'unauthorized' });
+            res.json('unauthorized');
         }
         else
         {
-            res.json({ status: 'camera_error' });
+            res.json('camera_error');
         }
     }
     catch (err)
     {
-        console.error('/camera/status:: proxy error:', err);
-        res.status(500).json('camera_proxy_error');
+        if (err.name === 'AbortError') 
+        {
+            console.error('/camera/status:: failed to connect camera, timeout expired (' + fetchTimeout + ' ms)');
+            res.json('camera_error');
+        }
+        else
+        {
+            console.error('/camera/status:: proxy error:', err);
+            res.status(500).json('camera_proxy_error');
+        }
     }
 });
 
